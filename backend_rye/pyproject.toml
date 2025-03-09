@@ -1,0 +1,44 @@
+[project]
+name = "uv_poetry_compare"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "django==4.2",
+    "django-debug-toolbar==3.2.1",
+    "django-filter==22.*",
+    "django-phonenumber-field==5.2.*",
+    "django-redis==5.4.*",
+    "djangorestframework==3.14.*",
+    "drf-spectacular==0.24.*",
+    "factory-boy==3.2.0",
+    "gunicorn==20.1.0",
+    "phonenumbers==8.12.29",
+    "pillow==10.0.1",
+    "psycopg2-binary==2.9.*",
+    "pytest==6.2.4",
+    "pytest-cov==2.12.1",
+    "pytest-django==4.4.0",
+    "pytest-mock==3.6.1",
+    "pytest-sugar==0.9.4",
+]
+
+[dependency-groups]
+lint = [
+    "django-stubs==1.14.*",
+    "djangorestframework-stubs==1.8.*",
+    "mypy==1.*",
+    "mypy-extensions==1.*",
+    "ruff>=0.9.10",
+]
+
+
+[behavior]
+force-rye-managed = false
+global-python = false
+autosync = true
+venv-mark-sync-ignore = true
+fetch-with-build-info = false
+
+[tool.rye]
+universal = true
+virtual = true

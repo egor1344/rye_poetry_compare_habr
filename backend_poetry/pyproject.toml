@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "UV, poetry compare"
+version = "0.1.0"
+description = "UV, poetry compare"
+license = "MIT"
+authors=["Egor Ponyavin <ep@idaproject.com>"]
+package-mode = false
+
+[tool.poetry.dependencies]
+# core
+python = "3.12.*"
+Django = "4.2.*"
+psycopg2-binary = "2.9.*"
+django-redis = "5.4.*"
+gunicorn = "^20.1.0"
+
+# Models \ Admin
+phonenumbers = "^8.12.29"
+django-phonenumber-field = "5.2.*"
+
+# Rest
+djangorestframework = "3.14.*"
+drf-spectacular = "0.24.*"
+django-filter = "22.*"
+
+# Test
+factory-boy = "^3.2.0"
+pytest = "^6.2.4"
+pytest-mock = "^3.6.1"
+pytest-cov = "^2.12.1"
+pytest-django = "^4.4.0"
+pytest-sugar = "^0.9.4"
+
+# Others
+Pillow = "10.0.1"
+
+[poetry.group.dev.dependencies]
+django-debug-toolbar = "^3.2.1"
+
+# linting
+ruff = "0.0.*"
+
+# Typehinting
+mypy = "1.*"
+mypy-extensions = "1.*"
+django-stubs = "1.14.*"
+djangorestframework-stubs="1.8.*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

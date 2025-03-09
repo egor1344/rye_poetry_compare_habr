@@ -1,0 +1,106 @@
+
+x-backend_environment: &backend_environment
+  environment:
+    - DEBUG
+    - API_DOCS_ENABLE
+    - SECRET_KEY
+    - POSTGRES_PASSWORD
+    - POSTGRES_HOST
+    - POSTGRES_PORT
+    - POSTGRES_NAME
+    - POSTGRES_USER
+    - REDIS_HOST
+    - REDIS_PORT
+    - SITE_HOST
+    - EMAIL_HOST
+    - EMAIL_HOST_USER
+    - EMAIL_HOST_PASSWORD
+    - EMAIL_PORT
+    - EMAIL_USE_TLS
+    - SERVER_EMAIL
+    - SENTRY_DSN
+    - SENTRY_ENVIRONMENT=${CI_COMMIT_REF_SLUG:-production}
+    - SENTRY_RELEASE=${CI_PIPELINE_ID}
+    - YND_ACCESS_KEY_ID
+    - YND_SECRET_ACCESS_KEY
+    - YND_STORAGE_BUCKET_NAME
+    - YND_STORAGE_ENDPOINT_URL
+    - IMGPROXY_URL
+    - AGENT_URL
+    - YND_CAPTCHA_SERVER_KEY
+
+
+services:
+
+  backend_poetry:
+    build:
+      context: ./backend_poetry
+    <<: *backend_environment
+    restart: unless-stopped
+    volumes:
+      - ./backend_poetry/:/app/:cached
+      - static:/app/static/:delegated
+    entrypoint: ./entrypoint.sh
+    command: poetry run python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+      - redis
+    ports:
+      - 8000:8000
+
+  backend_rye:
+    build:
+      context: ./backend_rye
+    <<: *backend_environment
+    restart: unless-stopped
+    volumes:
+      - ./backend_rye/:/app/:cached
+      - static:/app/static/:delegated
+    depends_on:
+      - db
+      - redis
+    ports:
+      - 8000:8000
+
+  backend_uv:
+    build:
+      context: ./backend_uv
+    <<: *backend_environment
+    restart: unless-stopped
+    volumes:
+      - ./backend_uv/:/app/:cached
+      - static:/app/static/:delegated
+    entrypoint: ./entrypoint.sh
+    command: uv run python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+      - redis
+    ports:
+      - 8000:8000
+
+  db:
+    restart: unless-stopped
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+    ports:
+      - 15239:5432
+    build:
+      context: ./db
+    environment:
+      - POSTGRES_PASSWORD
+      - POSTGRES_PORT
+      - POSTGRES_NAME
+      - POSTGRES_USER
+
+  redis:
+    image: redis:6.2-alpine
+    volumes:
+      - redisdata:/data
+    ports:
+      - 6379:6379
+
+
+volumes:
+  redisdata:
+  postgresdata:
+  static:
