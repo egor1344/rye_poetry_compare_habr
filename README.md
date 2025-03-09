@@ -24,9 +24,26 @@ POSTGRES_USER=postgres
 
 ```
 
-## Локальный запуск приложения
+## Локальная сборка приложений
 
 ```shell
 docker-compose build
-docker-compose -f docker-compose.yml -f docker-compose.override.yml up --remove-orphans -d --build
+```
+
+## Локальный запуск poetry
+
+```shell
+docker-compose run --rm backend_poetry
+```
+
+## Локальный запуск uv
+
+```shell
+docker-compose run --rm backend_uv
+```
+
+## Локальный запуск poetry
+
+```shell
+docker-compose run --rm backend_rye
 ```
